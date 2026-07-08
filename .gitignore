@@ -37,3 +37,6 @@ coverage/
 
 # Project-local shims (e.g., PowerShell wrapper for the IDE terminal)
 .shim/
+
+backend/uploads/*
+!backend/uploads/.gitkeep
