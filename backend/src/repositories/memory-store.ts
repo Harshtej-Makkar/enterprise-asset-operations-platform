@@ -92,15 +92,9 @@ export const seedPlants: Plant[] = [
   { id: 'aaaaaaaa-0000-0000-0000-000000000003', name: 'Nashik Plant',   city: 'Nashik', address: 'Plot 9, Sinnar MIDC, Nashik',       status: 'active' },
 ];
 
-const assetTypes = [
-  { id: 'bbbbbbbb-0000-0000-0000-000000000001', name: 'Hydraulic Press' },
-  { id: 'bbbbbbbb-0000-0000-0000-000000000002', name: 'Conveyor Motor'  },
-  { id: 'bbbbbbbb-0000-0000-0000-000000000003', name: 'Air Compressor'  },
-  { id: 'bbbbbbbb-0000-0000-0000-000000000004', name: 'Boiler'          },
-  { id: 'bbbbbbbb-0000-0000-0000-000000000005', name: 'CNC Machine'     },
-];
-
-export const seedAssetTypes = assetTypes;
+// Asset type list — defined in the Week 2 section below as a strongly-typed
+// `AssetTypeRecord[]`. The re-export of `seedAssetTypes` is provided at the
+// bottom of this file.
 
 function makeAsset(i: number, plantId: string, typeId: string, code: string, name: string, dept: string): Asset {
   return {
@@ -190,6 +184,121 @@ export const seedAuditLogs: AuditLog[] = [
   { id: '99999999-0009-0000-0000-000000000000', user_id: '55555555-5555-5555-5555-555555555555', action: 'work_order_assigned',      entity_type: 'work_order', entity_id: 'ffffffff-0003-0000-0000-000000000000', metadata: null, created_at: '2026-06-27T08:30:00Z' },
   { id: '99999999-0010-0000-0000-000000000000', user_id: '44444444-4444-4444-4444-444444444444', action: 'inspection_logged',        entity_type: 'inspection', entity_id: 'dddddddd-0000-0000-0000-000000000007', metadata: null, created_at: '2026-07-03T07:00:00Z' },
 ];
+
+/* ============================================================
+   Week 2 — checklist templates and asset types.
+
+   The seed so far is enough to demo list pages; for the inspection
+   dynamic-checklist form (DMDD §5) we need:
+     - one ChecklistTemplate per AssetType
+     - one or more ChecklistTemplateItems per template
+   Templates are intentionally small (4–6 items each) — enough to
+   make the form look real without becoming the demo's content.
+   ============================================================ */
+
+export interface AssetTypeRecord {
+  id: string;
+  name: string;
+}
+
+export interface ChecklistTemplateRecord {
+  id: string;
+  asset_type_id: string;
+  name: string;
+}
+
+export interface ChecklistTemplateItemRecord {
+  id: string;
+  checklist_template_id: string;
+  label: string;
+  order_index: number;
+  requires_photo: boolean;
+}
+
+const assetTypes: AssetTypeRecord[] = [
+  { id: 'bbbbbbbb-0000-0000-0000-000000000001', name: 'Hydraulic Press' },
+  { id: 'bbbbbbbb-0000-0000-0000-000000000002', name: 'Conveyor Motor'  },
+  { id: 'bbbbbbbb-0000-0000-0000-000000000003', name: 'Air Compressor'  },
+  { id: 'bbbbbbbb-0000-0000-0000-000000000004', name: 'Boiler'          },
+  { id: 'bbbbbbbb-0000-0000-0000-000000000005', name: 'CNC Machine'     },
+];
+
+export const seedAssetTypes: AssetTypeRecord[] = assetTypes;
+
+export const seedChecklistTemplates: ChecklistTemplateRecord[] = [
+  { id: 'ttttttt1-0000-0000-0000-000000000001', asset_type_id: 'bbbbbbbb-0000-0000-0000-000000000001', name: 'Hydraulic Press — Daily Inspection' },
+  { id: 'ttttttt1-0000-0000-0000-000000000002', asset_type_id: 'bbbbbbbb-0000-0000-0000-000000000002', name: 'Conveyor Motor — Daily Inspection'  },
+  { id: 'ttttttt1-0000-0000-0000-000000000003', asset_type_id: 'bbbbbbbb-0000-0000-0000-000000000003', name: 'Air Compressor — Daily Inspection'  },
+  { id: 'ttttttt1-0000-0000-0000-000000000004', asset_type_id: 'bbbbbbbb-0000-0000-0000-000000000004', name: 'Boiler — Daily Inspection'          },
+  { id: 'ttttttt1-0000-0000-0000-000000000005', asset_type_id: 'bbbbbbbb-0000-0000-0000-000000000005', name: 'CNC Machine — Daily Inspection'     },
+];
+
+export const seedChecklistTemplateItems: ChecklistTemplateItemRecord[] = [
+  // Hydraulic Press
+  { id: 'cl-hp-1', checklist_template_id: 'ttttttt1-0000-0000-0000-000000000001', label: 'Check hydraulic fluid level',                order_index: 1, requires_photo: false },
+  { id: 'cl-hp-2', checklist_template_id: 'ttttttt1-0000-0000-0000-000000000001', label: 'Inspect cylinder seals for leaks',           order_index: 2, requires_photo: true  },
+  { id: 'cl-hp-3', checklist_template_id: 'ttttttt1-0000-0000-0000-000000000001', label: 'Verify pressure gauge within tolerance',     order_index: 3, requires_photo: false },
+  { id: 'cl-hp-4', checklist_template_id: 'ttttttt1-0000-0000-0000-000000000001', label: 'Test emergency stop button',                 order_index: 4, requires_photo: false },
+  { id: 'cl-hp-5', checklist_template_id: 'ttttttt1-0000-0000-0000-000000000001', label: 'Lubricate guide rails',                      order_index: 5, requires_photo: false },
+  // Conveyor Motor
+  { id: 'cl-cm-1', checklist_template_id: 'ttttttt1-0000-0000-0000-000000000002', label: 'Check belt tension',                          order_index: 1, requires_photo: false },
+  { id: 'cl-cm-2', checklist_template_id: 'ttttttt1-0000-0000-0000-000000000002', label: 'Inspect belt for fraying or damage',         order_index: 2, requires_photo: true  },
+  { id: 'cl-cm-3', checklist_template_id: 'ttttttt1-0000-0000-0000-000000000002', label: 'Listen for abnormal motor noise',             order_index: 3, requires_photo: false },
+  { id: 'cl-cm-4', checklist_template_id: 'ttttttt1-0000-0000-0000-000000000002', label: 'Check motor temperature',                     order_index: 4, requires_photo: false },
+  { id: 'cl-cm-5', checklist_template_id: 'ttttttt1-0000-0000-0000-000000000002', label: 'Verify alignment of drive and idler pulleys', order_index: 5, requires_photo: true  },
+  // Air Compressor
+  { id: 'cl-ac-1', checklist_template_id: 'ttttttt1-0000-0000-0000-000000000003', label: 'Check oil level',                             order_index: 1, requires_photo: false },
+  { id: 'cl-ac-2', checklist_template_id: 'ttttttt1-0000-0000-0000-000000000003', label: 'Inspect air filter condition',                order_index: 2, requires_photo: true  },
+  { id: 'cl-ac-3', checklist_template_id: 'ttttttt1-0000-0000-0000-000000000003', label: 'Drain moisture from receiver tank',           order_index: 3, requires_photo: false },
+  { id: 'cl-ac-4', checklist_template_id: 'ttttttt1-0000-0000-0000-000000000003', label: 'Verify safety valve operation',               order_index: 4, requires_photo: false },
+  // Boiler
+  { id: 'cl-bo-1', checklist_template_id: 'ttttttt1-0000-0000-0000-000000000004', label: 'Check water level gauge',                      order_index: 1, requires_photo: false },
+  { id: 'cl-bo-2', checklist_template_id: 'ttttttt1-0000-0000-0000-000000000004', label: 'Inspect pressure relief valve',                order_index: 2, requires_photo: true  },
+  { id: 'cl-bo-3', checklist_template_id: 'ttttttt1-0000-0000-0000-000000000004', label: 'Verify flame pattern is stable',               order_index: 3, requires_photo: false },
+  { id: 'cl-bo-4', checklist_template_id: 'ttttttt1-0000-0000-0000-000000000004', label: 'Check combustion air damper operation',        order_index: 4, requires_photo: false },
+  { id: 'cl-bo-5', checklist_template_id: 'ttttttt1-0000-0000-0000-000000000004', label: 'Test low-water cutoff',                        order_index: 5, requires_photo: false },
+  // CNC Machine
+  { id: 'cl-cn-1', checklist_template_id: 'ttttttt1-0000-0000-0000-000000000005', label: 'Check spindle for abnormal vibration',         order_index: 1, requires_photo: false },
+  { id: 'cl-cn-2', checklist_template_id: 'ttttttt1-0000-0000-0000-000000000005', label: 'Verify tool magazine indexing',                 order_index: 2, requires_photo: true  },
+  { id: 'cl-cn-3', checklist_template_id: 'ttttttt1-0000-0000-0000-000000000005', label: 'Inspect way covers and wipers',                 order_index: 3, requires_photo: false },
+  { id: 'cl-cn-4', checklist_template_id: 'ttttttt1-0000-0000-0000-000000000005', label: 'Check coolant level and concentration',         order_index: 4, requires_photo: false },
+  { id: 'cl-cn-5', checklist_template_id: 'ttttttt1-0000-0000-0000-000000000005', label: 'Verify axis lubrication pressure',              order_index: 5, requires_photo: false },
+  { id: 'cl-cn-6', checklist_template_id: 'ttttttt1-0000-0000-0000-000000000005', label: 'Test emergency stop circuit',                    order_index: 6, requires_photo: false },
+];
+
+/**
+ * Mutable in-memory lists for data created at runtime (inspections, defects,
+ * work orders, audit logs, notifications). Initialised as empty arrays —
+ * seed data above is read-only and serves as the "starting state" for
+ * read endpoints, while write endpoints append to these lists so newly
+ * created records survive for the life of the server process.
+ */
+export const runtimeInspections: Inspection[] = [];
+export const runtimeDefects: Defect[] = [];
+export const runtimeWorkOrders: WorkOrder[] = [];
+export const runtimeAuditLogs: AuditLog[] = [];
+export const runtimeNotifications: Notification[] = [];
+
+/**
+ * Effective "all X" list for read endpoints — concatenates the immutable
+ * seed with whatever was created at runtime. Order: runtime first (newest
+ * in the typical user flow), then seed.
+ */
+export function allInspections(): Inspection[] {
+  return [...runtimeInspections, ...seedInspections];
+}
+export function allDefects(): Defect[] {
+  return [...runtimeDefects, ...seedDefects];
+}
+export function allWorkOrders(): WorkOrder[] {
+  return [...runtimeWorkOrders, ...seedWorkOrders];
+}
+export function allAuditLogs(): AuditLog[] {
+  return [...runtimeAuditLogs, ...seedAuditLogs];
+}
+export function allNotifications(): Notification[] {
+  return [...runtimeNotifications, ...seedNotifications];
+}
 
 export const seedNotifications: Notification[] = [
   { id: '77777777-0001-0000-0000-000000000000', user_id: '33333333-3333-3333-3333-333333333333', type: 'defect_critical',      message: 'Critical defect awaiting approval: Hydraulic fluid leak (CHK-HP-001)', entity_type: 'defect', entity_id: 'eeeeeeee-0003-0000-0000-000000000000', read: false, created_at: '2026-06-28T08:05:00Z' },

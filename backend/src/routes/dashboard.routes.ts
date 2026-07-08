@@ -5,4 +5,5 @@ import { requireAuth } from '../middleware/auth.js';
 export const dashboardRouter = Router();
 
 dashboardRouter.get('/kpis', requireAuth, (req, res) => dashboardController.kpis(req, res));
+dashboardRouter.get('/trends', requireAuth, (req, res) => dashboardController.trends(req, res));
 dashboardRouter.get('/recent', requireAuth, (req, res) => dashboardController.recent(req, res));
