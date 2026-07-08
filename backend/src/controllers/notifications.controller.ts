@@ -1,4 +1,4 @@
-import type { Request, Response } from 'express';
+import type { Response } from 'express';
 import {
   runtimeNotifications,
   seedNotifications,

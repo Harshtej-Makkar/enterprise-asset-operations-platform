@@ -7,4 +7,4 @@ export { defectService } from './defect.service';
 export { workOrderService } from './work-order.service';
 export { reportService } from './report.service';
 export { notificationService } from './notification.service';
-export { auditService } from './audit.service';
+export { auditService, type AuditLogActor } from './audit.service';
