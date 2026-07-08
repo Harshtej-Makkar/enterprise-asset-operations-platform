@@ -12,6 +12,10 @@ export function cn(...inputs: ClassValue[]): string {
 /**
  * Format an ISO date string for display in the UI.
  * Used by tables, audit log timeline, work order deadlines, etc.
+ *
+ * Renders as dd/mm/yyyy (en-GB locale with 2-digit month). The single
+ * source of truth for date formatting across the app — every page that
+ * shows a date imports this from @/lib/utils.
  */
 export function formatDate(iso: string | Date | null | undefined): string {
   if (!iso) return '—';
@@ -19,13 +23,29 @@ export function formatDate(iso: string | Date | null | undefined): string {
   if (Number.isNaN(d.getTime())) return '—';
   return d.toLocaleDateString('en-GB', {
     day: '2-digit',
-    month: 'short',
+    month: '2-digit',
     year: 'numeric',
   });
 }
 
 /**
+ * Compact dd/mm for chart X-axis labels and other space-constrained
+ * contexts. No year (e.g. "08/07"). Falls back to the dash sentinel
+ * for null/invalid input, matching formatDate.
+ */
+export function formatDateShort(iso: string | Date | null | undefined): string {
+  if (!iso) return '—';
+  const d = typeof iso === 'string' ? new Date(iso) : iso;
+  if (Number.isNaN(d.getTime())) return '—';
+  return d.toLocaleDateString('en-GB', {
+    day: '2-digit',
+    month: '2-digit',
+  });
+}
+
+/**
  * Format a datetime with time component, for the audit log etc.
+ * Renders as dd/mm/yyyy, HH:MM (en-GB locale with 2-digit month).
  */
 export function formatDateTime(iso: string | Date | null | undefined): string {
   if (!iso) return '—';
@@ -33,7 +53,7 @@ export function formatDateTime(iso: string | Date | null | undefined): string {
   if (Number.isNaN(d.getTime())) return '—';
   return d.toLocaleString('en-GB', {
     day: '2-digit',
-    month: 'short',
+    month: '2-digit',
     year: 'numeric',
     hour: '2-digit',
     minute: '2-digit',

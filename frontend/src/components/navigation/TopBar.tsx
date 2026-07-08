@@ -1,8 +1,7 @@
 import { useLocation } from 'react-router-dom';
-import { Bell, Search, Menu } from 'lucide-react';
+import { Search, Menu } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import {
   DropdownMenu,
@@ -13,7 +12,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { useAuth } from '@/hooks/useAuth';
-import { useNotifications } from '@/hooks/useNotifications';
+import { BellButton } from './BellButton';
 import { NAV_ITEMS } from '@/constants/nav';
 
 interface TopBarProps {
@@ -31,8 +30,6 @@ interface TopBarProps {
 export function TopBar({ onOpenMobileNav }: TopBarProps) {
   const location = useLocation();
   const { user, logout } = useAuth();
-  const { data: notifications } = useNotifications();
-  const unreadCount = notifications?.filter((n) => !n.read).length ?? 0;
 
   const currentNav = NAV_ITEMS.find((item) => location.pathname.startsWith(item.to));
   const pageTitle = currentNav?.label ?? 'EAOP';
@@ -71,25 +68,7 @@ export function TopBar({ onOpenMobileNav }: TopBarProps) {
       </div>
 
       <div className="flex items-center gap-2">
-        <Button
-          variant="ghost"
-          size="icon"
-          aria-label="Notifications"
-          className="relative"
-          asChild
-        >
-          <a href="/notifications">
-            <Bell className="h-4 w-4" />
-            {unreadCount > 0 && (
-              <Badge
-                variant="signal"
-                className="absolute -right-1 -top-1 h-4 min-w-4 justify-center px-1 text-[10px]"
-              >
-                {unreadCount}
-              </Badge>
-            )}
-          </a>
-        </Button>
+        <BellButton />
 
         <DropdownMenu>
           <DropdownMenuTrigger asChild>

@@ -8,6 +8,13 @@ export function useDashboardKpis() {
   });
 }
 
+export function useDashboardTrends() {
+  return useQuery({
+    queryKey: ['dashboard', 'trends'],
+    queryFn: () => dashboardService.getTrends(),
+  });
+}
+
 export function useRecentActivity() {
   return useQuery({
     queryKey: ['dashboard', 'recent'],

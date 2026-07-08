@@ -61,7 +61,12 @@ export const inspectionsController = {
 
     let rows = allInspections().slice();
     if (assetId) rows = rows.filter((i) => i.asset_id === assetId);
-    if (status) rows = rows.filter((i) => i.overall_result === status);
+    if (status) {
+      const statuses = status.split(',').map((s) => s.trim()).filter(Boolean);
+      if (statuses.length > 0) {
+        rows = rows.filter((i) => statuses.includes(i.overall_result));
+      }
+    }
     if (from) rows = rows.filter((i) => i.scheduled_date >= from);
     if (to) rows = rows.filter((i) => i.scheduled_date <= to);
 

@@ -1,5 +1,5 @@
 import { seedAssetTypes, seedAssets, seedPlants, seedUsers } from '../repositories/memory-store.js';
-import type { Asset, Defect, Inspection, User } from '../types/domain.js';
+import type { Asset, AuditLog, Defect, Inspection, Notification, User } from '../types/domain.js';
 
 /**
  * DTO mappers shared between controllers.
@@ -113,5 +113,64 @@ export function toDefectDto(d: Defect): DefectDto {
     photoUrls: d.photo_urls,
     status: d.status,
     createdAt: d.created_at,
+  };
+}
+
+/**
+ * Notification DTO. The list and bell-badge UI only need the flat
+ * fields — no embedded joins for now. If we later add an
+ * "entity preview" (e.g. the asset code for a defect_critical row),
+ * add it here so every consumer gets the same shape.
+ */
+export interface NotificationDto {
+  id: string;
+  userId: string;
+  type: Notification['type'];
+  message: string;
+  entityType: string | null;
+  entityId: string | null;
+  read: boolean;
+  createdAt: string;
+}
+
+export function toNotificationDto(n: Notification): NotificationDto {
+  return {
+    id: n.id,
+    userId: n.user_id,
+    type: n.type,
+    message: n.message,
+    entityType: n.entity_type,
+    entityId: n.entity_id,
+    read: n.read,
+    createdAt: n.created_at,
+  };
+}
+
+/**
+ * Audit log DTO. Joins the actor's display name so the table can
+ * render "Rajesh Kulkarni" without a second round-trip.
+ */
+export interface AuditLogDto {
+  id: string;
+  userId: string;
+  userName: string | null;
+  action: string;
+  entityType: AuditLog['entity_type'];
+  entityId: string;
+  metadata: Record<string, unknown> | null;
+  createdAt: string;
+}
+
+export function toAuditLogDto(r: AuditLog): AuditLogDto {
+  const user = seedUsers.find((u) => u.id === r.user_id);
+  return {
+    id: r.id,
+    userId: r.user_id,
+    userName: user ? user.full_name : null,
+    action: r.action,
+    entityType: r.entity_type,
+    entityId: r.entity_id,
+    metadata: r.metadata ?? null,
+    createdAt: r.created_at,
   };
 }

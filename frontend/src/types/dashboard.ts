@@ -19,3 +19,31 @@ export interface RecentActivityItem {
   userName: string;
   createdAt: string;
 }
+
+/**
+ * One bucket in the 30-day inspections trend series returned by
+ * GET /api/dashboard/trends. Counts inspections completed on the given
+ * date, broken down by result.
+ */
+export interface InspectionsByDayBucket {
+  date: string; // YYYY-MM-DD
+  pass: number;
+  fail: number;
+  pending: number;
+}
+
+/**
+ * Defect severity snapshot returned by GET /api/dashboard/trends.
+ * Total counts across all assets, broken down by severity.
+ */
+export interface DefectsBySeverity {
+  low: number;
+  medium: number;
+  high: number;
+  critical: number;
+}
+
+export interface DashboardTrends {
+  inspectionsByDay: InspectionsByDayBucket[];
+  defectsBySeverity: DefectsBySeverity;
+}
