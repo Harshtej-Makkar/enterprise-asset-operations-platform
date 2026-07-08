@@ -8,6 +8,7 @@ import { PagePlaceholder } from '@/components/common/PagePlaceholder';
 import { StatusBadge } from '@/components/common/StatusBadge';
 import { Button } from '@/components/ui/button';
 import { useInspection, useInspectionItems } from '@/hooks/useInspections';
+import { toAbsolutePhotoUrl } from '@/lib/utils';
 import type { InspectionItemResponse } from '@/services/api/inspection.service';
 
 /**
@@ -75,15 +76,19 @@ export default function InspectionDetailPage() {
               <span className="text-text-muted">—</span>
             );
           }
+          // Backend returns relative paths (/uploads/...); the browser
+          // can't resolve them against the frontend dev server, so the
+          // helper prepends the backend origin.
+          const absolute = toAbsolutePhotoUrl(v) ?? v;
           return (
             <a
-              href={v}
+              href={absolute}
               target="_blank"
               rel="noreferrer"
               className="inline-block overflow-hidden rounded-sm border border-border-default"
             >
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={v} alt="Checklist item" className="h-10 w-14 object-cover" />
+              <img src={absolute} alt="Checklist item" className="h-10 w-14 object-cover" />
             </a>
           );
         },

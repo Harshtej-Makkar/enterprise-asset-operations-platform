@@ -1,7 +1,7 @@
 import { ImagePlus, X } from 'lucide-react';
 import { useCallback, useEffect, useState } from 'react';
 import { useDropzone, type Accept, type FileRejection } from 'react-dropzone';
-import { cn } from '@/lib/utils';
+import { cn, toAbsolutePhotoUrl } from '@/lib/utils';
 
 interface FileUploadProps {
   /** The current photo URL (server-stored). null when no file chosen yet. */
@@ -85,11 +85,12 @@ export function FileUpload({
   const showError = error ?? internalError;
 
   if (value) {
+    const previewSrc = toAbsolutePhotoUrl(value) ?? value;
     return (
       <div className={cn('flex flex-col gap-2', className)}>
         <div className="relative overflow-hidden rounded-sm border border-border-default bg-bg-surface-raised">
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={value} alt="Uploaded" className="block h-40 w-full object-contain" />
+          <img src={previewSrc} alt="Uploaded" className="block h-40 w-full object-contain" />
           <button
             type="button"
             onClick={() => onChange(null)}

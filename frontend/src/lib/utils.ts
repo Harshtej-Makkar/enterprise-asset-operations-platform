@@ -41,6 +41,41 @@ export function formatDateTime(iso: string | Date | null | undefined): string {
 }
 
 /**
+ * Absolute base URL for photo assets served by the backend.
+ *
+ * The backend stores uploaded images under `/uploads/*` and the API
+ * returns the relative path in JSON (e.g. `/uploads/abc.png`).
+ * In dev, the Vite server only proxies `/api/*` to the backend — it
+ * does NOT proxy `/uploads/*` — so a relative URL would resolve to
+ * the frontend dev server (404). We prefix the relative URL with the
+ * backend's origin so the browser hits the right server.
+ *
+ * The default targets the local backend on :4000. Override in
+ * production via `VITE_UPLOADS_BASE_URL` (e.g.
+ * `https://eaop-backend.railway.app`). If the URL is already absolute
+ * (`http://...` or `https://...`), it's returned unchanged.
+ */
+const UPLOADS_BASE_URL =
+  (import.meta.env.VITE_UPLOADS_BASE_URL as string | undefined) ??
+  'http://localhost:4000';
+
+/**
+ * Convert a photo URL returned by the backend (always relative, e.g.
+ * `/uploads/abc.png`) into an absolute URL the browser can fetch.
+ * Pass-through for null/undefined/empty so callers can use it
+ * defensively on the value-with-default pattern.
+ */
+export function toAbsolutePhotoUrl(url: string | null | undefined): string | null {
+  if (!url) return null;
+  // Already absolute (http/https/data/blob) — use as-is
+  if (/^(https?:|data:|blob:)/i.test(url)) return url;
+  // Make sure exactly one slash joins the base and the path
+  const base = UPLOADS_BASE_URL.replace(/\/$/, '');
+  const path = url.startsWith('/') ? url : `/${url}`;
+  return `${base}${path}`;
+}
+
+/**
  * Localized-storage helpers for the simplified JWT auth flow.
  * The mock backend issues a JWT; the frontend persists it in localStorage
  * (documented as a simplification — see FSMOD §16).
