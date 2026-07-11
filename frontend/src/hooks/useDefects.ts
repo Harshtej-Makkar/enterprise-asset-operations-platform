@@ -66,3 +66,15 @@ export function useRejectDefect() {
     },
   });
 }
+
+export function useResolveDefect() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: ({ id }: { id: string }) => defectService.patchStatus(id, 'resolved'),
+    onSuccess: (_, vars) => {
+      qc.invalidateQueries({ queryKey: ['defects', vars.id] });
+      qc.invalidateQueries({ queryKey: ['defects'] });
+      qc.invalidateQueries({ queryKey: ['dashboard', 'kpis'] });
+    },
+  });
+}

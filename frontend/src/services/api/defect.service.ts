@@ -52,4 +52,9 @@ export const defectService = {
     });
     return data;
   },
+
+  async patchStatus(id: string, status: string): Promise<Defect> {
+    const { data } = await apiClient.patch<Defect>(`/defects/${id}/status`, { status });
+    return data;
+  },
 };
