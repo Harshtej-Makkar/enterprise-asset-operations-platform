@@ -3,10 +3,10 @@ import type { Defect, Approval } from '@/types/defect';
 import type { PaginatedResponse } from '@/types/common';
 
 /**
- * Defect service — stub for Week 1.
+ * Defect service — Week 3 real implementation.
  *
  * Includes the approval endpoint per FSMOD §9 (approval is an action on the
- * defect, not a separate module). The real implementation lands in Week 3.
+ * defect, not a separate module).
  */
 export const defectService = {
   async list(params?: {
@@ -14,6 +14,7 @@ export const defectService = {
     pageSize?: number;
     severity?: string;
     status?: string;
+    plantId?: string;
   }): Promise<PaginatedResponse<Defect>> {
     const { data } = await apiClient.get<PaginatedResponse<Defect>>('/defects', { params });
     return data;
@@ -21,6 +22,18 @@ export const defectService = {
 
   async get(id: string): Promise<Defect> {
     const { data } = await apiClient.get<Defect>(`/defects/${id}`);
+    return data;
+  },
+
+  async create(payload: {
+    assetId: string;
+    inspectionId?: string;
+    severity: string;
+    category: string;
+    description: string;
+    photoUrls?: string[];
+  }): Promise<Defect> {
+    const { data } = await apiClient.post<Defect>('/defects', payload);
     return data;
   },
 

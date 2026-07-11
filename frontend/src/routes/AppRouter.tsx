@@ -14,6 +14,7 @@ import NewInspectionPage from '@/features/inspections/pages/NewInspectionPage';
 import InspectionDetailPage from '@/features/inspections/pages/InspectionDetailPage';
 import DefectListPage from '@/features/defects/pages/DefectListPage';
 import DefectDetailPage from '@/features/defects/pages/DefectDetailPage';
+import LogDefectPage from '@/features/defects/pages/LogDefectPage';
 import WorkOrderBoardPage from '@/features/work-orders/pages/WorkOrderBoardPage';
 import WorkOrderDetailPage from '@/features/work-orders/pages/WorkOrderDetailPage';
 import ReportsPage from '@/features/reports/pages/ReportsPage';
@@ -59,6 +60,7 @@ export function AppRouter() {
         <Route path="/inspections/:id" element={<InspectionDetailPage />} />
 
         <Route path="/defects" element={<DefectListPage />} />
+        <Route path="/defects/new" element={<LogDefectPage />} />
         <Route path="/defects/:id" element={<DefectDetailPage />} />
 
         <Route path="/work-orders" element={<WorkOrderBoardPage />} />

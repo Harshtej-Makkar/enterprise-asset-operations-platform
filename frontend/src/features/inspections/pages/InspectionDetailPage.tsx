@@ -1,5 +1,5 @@
 import { type ColumnDef } from '@tanstack/react-table';
-import { ArrowLeft, Image as ImageIcon, MapPin, User } from 'lucide-react';
+import { AlertTriangle, ArrowLeft, Image as ImageIcon, MapPin, User } from 'lucide-react';
 import { useMemo } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { DataTable } from '@/components/tables/DataTable';
@@ -135,7 +135,25 @@ export default function InspectionDetailPage() {
         title={`Inspection · ${inspection.scheduledDate}`}
         description={inspection.id}
         eyebrow="Inspection Detail"
-        actions={<StatusBadge status={inspection.overallResult} />}
+        actions={
+          <div className="flex items-center gap-2">
+            <StatusBadge status={inspection.overallResult} />
+            {inspection.asset && (
+              <Button
+                variant="secondary"
+                size="sm"
+                onClick={() =>
+                  navigate(
+                    `/defects/new?assetId=${inspection.asset!.id}&inspectionId=${inspection.id}`,
+                  )
+                }
+                className="gap-1.5"
+              >
+                <AlertTriangle className="h-4 w-4" /> Log Defect
+              </Button>
+            )}
+          </div>
+        }
       />
 
       <div className="rounded-sm border border-border-default bg-bg-surface p-5">

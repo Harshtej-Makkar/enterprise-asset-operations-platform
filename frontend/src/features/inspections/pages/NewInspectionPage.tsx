@@ -139,6 +139,20 @@ export default function NewInspectionPage() {
         title="New Inspection"
         description="Select an asset, then complete the dynamic checklist. Required photos are enforced."
         eyebrow="Inspections"
+        actions={
+          selectedAssetId ? (
+            <Button
+              variant="secondary"
+              size="sm"
+              onClick={() =>
+                navigate(`/defects/new?assetId=${selectedAssetId}`)
+              }
+              className="gap-1.5"
+            >
+              <AlertTriangle className="h-4 w-4" /> Log Defect
+            </Button>
+          ) : undefined
+        }
       />
 
       {/* Step 1 — Asset picker */}

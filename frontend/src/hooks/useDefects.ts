@@ -7,6 +7,7 @@ export function useDefects(params?: {
   pageSize?: number;
   severity?: string;
   status?: string;
+  plantId?: string;
 }) {
   return useQuery({
     queryKey: ['defects', params ?? {}],
@@ -19,6 +20,24 @@ export function useDefect(id: string | undefined) {
     queryKey: ['defects', id],
     queryFn: () => defectService.get(id as string),
     enabled: !!id,
+  });
+}
+
+export function useCreateDefect() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: (payload: {
+      assetId: string;
+      inspectionId?: string;
+      severity: string;
+      category: string;
+      description: string;
+      photoUrls?: string[];
+    }) => defectService.create(payload),
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ['defects'] });
+      qc.invalidateQueries({ queryKey: ['dashboard', 'kpis'] });
+    },
   });
 }
 

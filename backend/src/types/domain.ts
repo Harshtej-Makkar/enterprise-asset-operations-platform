@@ -102,6 +102,15 @@ export interface AuditLog {
   created_at: string;
 }
 
+export interface Approval {
+  id: string;
+  defect_id: string;
+  approver_id: string;
+  decision: 'approved' | 'rejected';
+  comment: string | null;
+  decided_at: string;
+}
+
 export interface Notification {
   id: string;
   user_id: string;
