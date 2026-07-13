@@ -54,7 +54,7 @@ export default function WorkOrderBoardPage() {
           <p className="text-body text-text-muted">Loading work orders…</p>
         </div>
       ) : (
-        <div className="flex gap-4 overflow-x-auto pb-4">
+        <div className="grid grid-cols-1 gap-4 pb-4 md:grid-cols-2 lg:grid-cols-4">
           {COLUMNS.map((col) => (
             <KanbanColumn
               key={col.status}

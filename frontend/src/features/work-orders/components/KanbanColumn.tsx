@@ -26,7 +26,7 @@ export function KanbanColumn({
   const color = STATUS_COLORS[status] ?? STATUS_COLORS.open;
 
   return (
-    <div className="flex min-w-[240px] flex-col rounded-sm border border-border-default bg-neutral-50/50">
+    <div className="flex min-h-[200px] flex-col rounded-sm border border-border-default bg-bg-surface">
       <div className="flex items-center justify-between border-b border-border-default px-3 py-2.5">
         <h3 className="text-caption font-semibold text-text-primary">{title}</h3>
         <span className={`inline-block rounded-full px-2 py-0.5 text-[10px] font-semibold ${color}`}>

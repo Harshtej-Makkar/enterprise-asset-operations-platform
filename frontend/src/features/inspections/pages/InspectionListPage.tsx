@@ -173,7 +173,7 @@ export default function InspectionListPage() {
 
       <FilterPanel>
         {/* Status multi-select */}
-        <fieldset className="flex flex-wrap items-center gap-x-4 gap-y-1.5">
+        <fieldset className="flex flex-wrap items-center gap-x-3 gap-y-1.5 md:gap-x-4">
           <legend className="sr-only">Filter by inspection result</legend>
           {ALL_STATUSES.map((s) => (
             <label
@@ -209,19 +209,21 @@ export default function InspectionListPage() {
         )}
       </FilterPanel>
 
-      <DataTable
-        columns={columns}
-        data={data}
-        isLoading={inspectionsQuery.isLoading}
-        pagination={{
-          page,
-          pageSize: PAGE_SIZE,
-          total,
-          onPageChange: setPage,
-        }}
-        onRowClick={(row) => navigate(`/inspections/${row.id}`)}
-        emptyState="No inspections match these filters."
-      />
+      <div className="overflow-x-auto">
+        <DataTable
+          columns={columns}
+          data={data}
+          isLoading={inspectionsQuery.isLoading}
+          pagination={{
+            page,
+            pageSize: PAGE_SIZE,
+            total,
+            onPageChange: setPage,
+          }}
+          onRowClick={(row) => navigate(`/inspections/${row.id}`)}
+          emptyState="No inspections match these filters."
+        />
+      </div>
     </div>
   );
 }

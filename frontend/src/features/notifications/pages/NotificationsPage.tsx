@@ -68,7 +68,7 @@ export default function NotificationsPage() {
         }
       />
 
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <SegmentedToggle
           options={FILTER_OPTIONS}
           value={filter}
