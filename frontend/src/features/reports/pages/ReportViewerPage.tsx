@@ -59,31 +59,13 @@ export default function ReportViewerPage() {
     }
   }, [id]);
 
-  if (reportQuery.isLoading) {
-    return (
-      <div className="flex items-center justify-center py-24">
-        <Loader2 className="h-6 w-6 animate-spin text-text-muted" />
-      </div>
-    );
-  }
-
-  if (reportQuery.isError || !reportQuery.data) {
-    return (
-      <div className="space-y-6 py-12 text-center">
-        <p className="text-body text-text-secondary">Report not found.</p>
-        <Button variant="outline" size="sm" onClick={() => navigate('/reports')}>
-          Back to Reports
-        </Button>
-      </div>
-    );
-  }
-
   const report = reportQuery.data;
-  const { data: reportData } = report;
+  const reportData = report?.data;
 
   // Build dynamic columns from the first row's keys
+  // MUST be before any conditional returns — React hooks rule
   const columns = useMemo<ColumnDef<Record<string, unknown>, unknown>[]>(() => {
-    if (reportData.rows.length === 0) return [];
+    if (!reportData || reportData.rows.length === 0) return [];
     const keys = Object.keys(reportData.rows[0]);
     return keys.map((key) => ({
       accessorKey: key,
@@ -95,9 +77,28 @@ export default function ReportViewerPage() {
       },
       size: 150,
     }));
-  }, [reportData.rows]);
+  }, [reportData?.rows]);
 
-  const summaryEntries = Object.entries(reportData.summary ?? {});
+  const summaryEntries = Object.entries(reportData?.summary ?? {});
+
+  if (reportQuery.isLoading) {
+    return (
+      <div className="flex items-center justify-center py-24">
+        <Loader2 className="h-6 w-6 animate-spin text-text-muted" />
+      </div>
+    );
+  }
+
+  if (reportQuery.isError || !report || !reportData) {
+    return (
+      <div className="space-y-6 py-12 text-center">
+        <p className="text-body text-text-secondary">Report not found.</p>
+        <Button variant="outline" size="sm" onClick={() => navigate('/reports')}>
+          Back to Reports
+        </Button>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6">
