@@ -4,6 +4,7 @@ import {
   allInspections,
   runtimeAuditLogs,
   runtimeInspections,
+  runtimeNotifications,
   seedAssetTypes,
   seedAssets,
   seedChecklistTemplateItems,
@@ -290,6 +291,38 @@ export const inspectionsController = {
       created_at: now,
     });
     req.app.set('auditLogs', runtimeAuditLogs);
+
+    // Notifications — BWF §14 events: inspection_due for the inspector
+    // (inspection_assigned would fire here if a supervisor assigned to
+    // another inspector; MVP flow has the inspector self-create.)
+    runtimeNotifications.push({
+      id: randomUUID(),
+      user_id: inspectorId,
+      type: 'inspection_due',
+      message: `Inspection scheduled: ${asset.name} (${asset.asset_code}) on ${body.scheduledDate}`,
+      entity_type: 'inspection',
+      entity_id: inspectionId,
+      read: false,
+      created_at: now,
+    });
+
+    // Notify supervisors + plant managers of new inspection results
+    const supervisorIds = seedUsers
+      .filter((u) => u.role === 'supervisor' || u.role === 'plant_manager')
+      .map((u) => u.id);
+    for (const supId of supervisorIds) {
+      if (supId === inspectorId) continue; // don't double-notify
+      runtimeNotifications.push({
+        id: randomUUID(),
+        user_id: supId,
+        type: 'inspection_completed',
+        message: `Inspection completed: ${asset.name} (${asset.asset_code}) by ${inspector?.full_name ?? 'inspector'} — result: ${overallResult}`,
+        entity_type: 'inspection',
+        entity_id: inspectionId,
+        read: false,
+        created_at: now,
+      });
+    }
 
     res.status(201).json(toInspectionDto(inspection));
   },

@@ -48,9 +48,11 @@ export function NotificationRow({ notification: n, onNavigate }: NotificationRow
       ? 'critical'
       : n.type === 'inspection_overdue' || n.type === 'work_order_assigned'
         ? 'warning'
-        : n.type === 'work_order_completed'
+        : n.type === 'work_order_completed' || n.type === 'defect_approved'
           ? 'success'
-          : 'info';
+          : n.type === 'defect_rejected'
+            ? 'critical'
+            : 'info';
 
   return (
     <div

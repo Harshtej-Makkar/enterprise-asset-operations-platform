@@ -167,6 +167,34 @@ async function create(req: AuthedRequest, res: Response): Promise<void> {
           created_at: now,
         });
       });
+  } else {
+    // Non-critical defect: notify the reporter with a receipt
+    runtimeNotifications.push({
+      id: randomUUID(),
+      user_id: defect.reported_by,
+      type: 'defect_created',
+      message: `Defect logged (${defect.severity}): ${defect.description.slice(0, 80)}`,
+      entity_type: 'defect',
+      entity_id: defect.id,
+      read: false,
+      created_at: now,
+    });
+
+    // Also notify supervisors for visibility
+    seedUsers
+      .filter((u) => u.role === 'supervisor')
+      .forEach((u) => {
+        runtimeNotifications.push({
+          id: randomUUID(),
+          user_id: u.id,
+          type: 'defect_created',
+          message: `New defect reported on ${asset.name}: ${defect.description.slice(0, 60)}`,
+          entity_type: 'defect',
+          entity_id: defect.id,
+          read: false,
+          created_at: now,
+        });
+      });
   }
 
   res.status(201).json(toDefectDto(defect));

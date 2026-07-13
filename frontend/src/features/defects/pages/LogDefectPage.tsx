@@ -138,7 +138,7 @@ export default function LogDefectPage() {
               id="plantFilter"
               value={plantFilter}
               onChange={(e) => setPlantFilter(e.target.value)}
-              className="mt-1 w-full rounded-sm border border-border-default bg-bg-surface p-2 text-caption text-text-primary focus:border-border-focus focus:outline-none focus:ring-2 focus:ring-border-focus/40"
+              className="mt-1 w-full min-h-10 rounded-sm border border-border-default bg-bg-surface p-2.5 text-caption text-text-primary focus:border-border-focus focus:outline-none focus:ring-2 focus:ring-border-focus/40"
             >
               <option value="">All plants</option>
               {plants.map((p) => (
@@ -161,7 +161,7 @@ export default function LogDefectPage() {
                 setErrors((prev) => ({ ...prev, assetId: '' }));
               }}
               disabled={!!preselectedAssetId}
-              className="mt-1 w-full rounded-sm border border-border-default bg-bg-surface p-2 text-caption text-text-primary focus:border-border-focus focus:outline-none focus:ring-2 focus:ring-border-focus/40 disabled:opacity-60"
+              className="mt-1 w-full min-h-10 rounded-sm border border-border-default bg-bg-surface p-2.5 text-caption text-text-primary focus:border-border-focus focus:outline-none focus:ring-2 focus:ring-border-focus/40 disabled:opacity-60"
             >
               <option value="">Select an asset…</option>
               {filteredAssets.map((a) => (
@@ -189,7 +189,7 @@ export default function LogDefectPage() {
                 setSeverity(e.target.value as DefectSeverity);
                 setErrors((prev) => ({ ...prev, severity: '' }));
               }}
-              className="mt-1 w-full rounded-sm border border-border-default bg-bg-surface p-2 text-caption text-text-primary focus:border-border-focus focus:outline-none focus:ring-2 focus:ring-border-focus/40"
+              className="mt-1 w-full min-h-10 rounded-sm border border-border-default bg-bg-surface p-2.5 text-caption text-text-primary focus:border-border-focus focus:outline-none focus:ring-2 focus:ring-border-focus/40"
             >
               <option value="">Choose severity…</option>
               {SEVERITY_OPTIONS.map((opt) => (
@@ -214,7 +214,7 @@ export default function LogDefectPage() {
                 setCategory(e.target.value);
                 setErrors((prev) => ({ ...prev, category: '' }));
               }}
-              className="mt-1 w-full rounded-sm border border-border-default bg-bg-surface p-2 text-caption text-text-primary focus:border-border-focus focus:outline-none focus:ring-2 focus:ring-border-focus/40"
+              className="mt-1 w-full min-h-10 rounded-sm border border-border-default bg-bg-surface p-2.5 text-caption text-text-primary focus:border-border-focus focus:outline-none focus:ring-2 focus:ring-border-focus/40"
             >
               <option value="">Choose category…</option>
               {COMMON_CATEGORIES.map((cat) => (
@@ -244,7 +244,7 @@ export default function LogDefectPage() {
             rows={4}
             maxLength={500}
             placeholder="Describe the defect in detail — location, appearance, measurements, etc."
-            className="mt-1 w-full rounded-sm border border-border-default bg-bg-surface p-2 text-caption text-text-primary placeholder:text-text-muted focus:border-border-focus focus:outline-none focus:ring-2 focus:ring-border-focus/40"
+            className="mt-1 w-full min-h-10 rounded-sm border border-border-default bg-bg-surface p-2.5 text-caption text-text-primary placeholder:text-text-muted focus:border-border-focus focus:outline-none focus:ring-2 focus:ring-border-focus/40"
           />
           <div className="mt-1 flex justify-between text-caption text-text-secondary">
             <span>

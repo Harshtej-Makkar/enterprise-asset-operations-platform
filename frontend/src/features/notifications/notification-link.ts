@@ -42,8 +42,14 @@ export function notificationTypeLabel(t: NotificationType): string {
       return 'Inspection due';
     case 'inspection_overdue':
       return 'Inspection overdue';
+    case 'defect_created':
+      return 'Defect created';
     case 'defect_critical':
       return 'Critical defect';
+    case 'defect_approved':
+      return 'Defect approved';
+    case 'defect_rejected':
+      return 'Defect rejected';
     case 'work_order_assigned':
       return 'Work order assigned';
     case 'work_order_completed':

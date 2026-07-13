@@ -286,7 +286,7 @@ export default function NewInspectionPage() {
                               type="button"
                               onClick={() => updateItem(tplItem.id, { result: opt })}
                               className={cn(
-                                'inline-flex h-9 items-center gap-1.5 rounded-sm border px-3 text-caption font-medium uppercase tracking-wider transition-colors',
+                                'inline-flex h-10 items-center gap-1.5 rounded-sm border px-3 text-caption font-medium uppercase tracking-wider transition-colors sm:h-11 sm:px-4 sm:text-body',
                                 active
                                   ? tones[opt]
                                   : 'border-border-default text-text-secondary hover:border-border-strong hover:text-text-primary',

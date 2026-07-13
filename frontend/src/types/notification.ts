@@ -1,7 +1,10 @@
 export type NotificationType =
   | 'inspection_due'
   | 'inspection_overdue'
+  | 'defect_created'
   | 'defect_critical'
+  | 'defect_approved'
+  | 'defect_rejected'
   | 'work_order_assigned'
   | 'work_order_completed'
   | 'approval_required';
