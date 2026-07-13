@@ -92,6 +92,15 @@ export interface WorkOrder {
   created_at: string;
 }
 
+export interface MaintenanceUpdate {
+  id: string;
+  work_order_id: string;
+  technician_id: string;
+  note: string;
+  status_change_to: WorkOrderStatus | null;
+  created_at: string;
+}
+
 export interface AuditLog {
   id: string;
   user_id: string;

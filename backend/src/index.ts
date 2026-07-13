@@ -10,6 +10,7 @@ import { plantsRouter, assetTypesRouter } from './routes/taxonomy.routes.js';
 import { uploadsRouter } from './routes/uploads.routes.js';
 import { defectsRouter } from './routes/defects.routes.js';
 import { workOrdersRouter } from './routes/work-orders.routes.js';
+import { usersRouter } from './routes/users.routes.js';
 import { reportsRouter } from './routes/reports.routes.js';
 import { notificationsRouter } from './routes/notifications.routes.js';
 import { auditRouter } from './routes/audit.routes.js';
@@ -73,6 +74,7 @@ app.use('/uploads', express.static(UPLOAD_DIR, { maxAge: '1h' }));
 // Module routers still in stub mode (Week 3+ work).
 app.use('/api/defects', defectsRouter);
 app.use('/api/work-orders', workOrdersRouter);
+app.use('/api/users', usersRouter);
 app.use('/api/reports', reportsRouter);
 app.use('/api/notifications', notificationsRouter);
 app.use('/api/audit-log', auditRouter);

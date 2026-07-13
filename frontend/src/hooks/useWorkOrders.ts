@@ -33,3 +33,34 @@ export function useChangeWorkOrderStatus() {
     },
   });
 }
+
+export function useAssignWorkOrder() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: ({ id, technicianId }: { id: string; technicianId: string }) =>
+      workOrderService.assign(id, technicianId),
+    onSuccess: (data, vars) => {
+      qc.setQueryData(['work-orders', vars.id], data);
+      qc.invalidateQueries({ queryKey: ['work-orders'] });
+    },
+  });
+}
+
+export function useAddWorkOrderNote() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: ({
+      id,
+      note,
+      statusChangeTo,
+    }: {
+      id: string;
+      note: string;
+      statusChangeTo?: WorkOrderStatus | null;
+    }) => workOrderService.addNote(id, { note, statusChangeTo }),
+    onSuccess: (_data, vars) => {
+      qc.invalidateQueries({ queryKey: ['work-orders', vars.id] });
+      qc.invalidateQueries({ queryKey: ['work-orders'] });
+    },
+  });
+}
