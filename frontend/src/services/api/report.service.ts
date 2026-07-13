@@ -1,18 +1,37 @@
 import { apiClient } from './api-client';
-import type { ReportFilter } from '@/types/report';
+import type { ReportFilter, ReportListItem, GeneratedReport } from '@/types/report';
 
 /**
- * Report service — stub for Week 1. Real implementation lands in Week 5.
- * CSV export is required; PDF is stretch goal.
+ * Report service — Week 5 implementation.
+ * Endpoints per API Contract §16:
+ *   GET    /reports          → list previously generated reports
+ *   POST   /reports/generate → generate a new report
+ *   GET    /reports/:id       → preview a generated report
+ *   GET    /reports/:id/export?format=csv → CSV download
  */
 export const reportService = {
-  async run(filter: ReportFilter): Promise<unknown[]> {
-    const { data } = await apiClient.post<unknown[]>('/reports/run', filter);
+  /** List previously generated reports */
+  async list(): Promise<{ data: ReportListItem[]; total: number }> {
+    const { data } = await apiClient.get<{ data: ReportListItem[]; total: number }>('/reports');
     return data;
   },
 
-  async exportCsv(filter: ReportFilter): Promise<Blob> {
-    const { data } = await apiClient.post<Blob>('/reports/export', filter, {
+  /** Generate a new report */
+  async generate(filter: ReportFilter): Promise<GeneratedReport> {
+    const { data } = await apiClient.post<GeneratedReport>('/reports/generate', filter);
+    return data;
+  },
+
+  /** Preview a generated report */
+  async get(id: string): Promise<GeneratedReport> {
+    const { data } = await apiClient.get<GeneratedReport>(`/reports/${id}`);
+    return data;
+  },
+
+  /** Export CSV */
+  async exportCsv(id: string): Promise<Blob> {
+    const { data } = await apiClient.get<Blob>(`/reports/${id}/export`, {
+      params: { format: 'csv' },
       responseType: 'blob',
     });
     return data;

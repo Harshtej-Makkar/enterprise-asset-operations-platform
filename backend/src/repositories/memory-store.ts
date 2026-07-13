@@ -9,6 +9,7 @@ import type {
   User,
   WorkOrder,
 } from '../types/domain.js';
+import type { GeneratedReport } from '../controllers/reports.controller.js';
 
 /**
  * In-memory seed store.
@@ -278,6 +279,7 @@ export const runtimeDefects: Defect[] = [];
 export const runtimeWorkOrders: WorkOrder[] = [];
 export const runtimeAuditLogs: AuditLog[] = [];
 export const runtimeNotifications: Notification[] = [];
+export const runtimeReports: GeneratedReport[] = [];
 
 /**
  * Effective "all X" list for read endpoints — concatenates the immutable

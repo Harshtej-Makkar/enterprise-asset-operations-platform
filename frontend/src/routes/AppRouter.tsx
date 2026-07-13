@@ -18,6 +18,7 @@ import LogDefectPage from '@/features/defects/pages/LogDefectPage';
 import WorkOrderBoardPage from '@/features/work-orders/pages/WorkOrderBoardPage';
 import WorkOrderDetailPage from '@/features/work-orders/pages/WorkOrderDetailPage';
 import ReportsPage from '@/features/reports/pages/ReportsPage';
+import ReportViewerPage from '@/features/reports/pages/ReportViewerPage';
 import NotificationsPage from '@/features/notifications/pages/NotificationsPage';
 import AuditLogPage from '@/features/audit/pages/AuditLogPage';
 import SettingsPage from '@/features/settings/pages/SettingsPage';
@@ -67,6 +68,7 @@ export function AppRouter() {
         <Route path="/work-orders/:id" element={<WorkOrderDetailPage />} />
 
         <Route path="/reports" element={<ReportsPage />} />
+        <Route path="/reports/:id" element={<ReportViewerPage />} />
         <Route path="/notifications" element={<NotificationsPage />} />
         <Route path="/audit-log" element={<AuditLogPage />} />
         <Route path="/settings" element={<SettingsPage />} />
