@@ -92,6 +92,14 @@ All accounts use the password `password123`:
 - **Notifications are polling-based**, not real-time (PRD §6).
 - **The mock backend is intentionally minimal** — it returns correct seeded data, not a production backend (FSMOD §16). Documented simplifications live in `backend/README.md`.
 
+## Deployment
+
+### CRITICAL: Uploads environment variable
+
+**Set `VITE_UPLOADS_BASE_URL` to your deployed backend's public URL (e.g. `https://your-backend.railway.app`) in your Vercel project's environment variables before deploying the frontend.** If this is left unset or wrong, all inspection/defect photos will silently fail to load — they'll try to fetch from `localhost:4000`, which won't exist in production.
+
+The mechanism (see `frontend/src/lib/utils.ts`, `toAbsolutePhotoUrl`) prepends this base URL to relative `/uploads/*` paths returned by the backend API. In dev, the built-in default (`http://localhost:4000`) is correct because both servers run on the same machine. In production, the environment variable overrides the default and must point to wherever your backend is deployed.
+
 ## Project structure references
 
 The full Week 1–6 plan, route map, data model, and design tokens are in the `references/` folder. Any future agent or developer joining the build should start there.
