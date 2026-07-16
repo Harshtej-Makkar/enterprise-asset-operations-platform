@@ -62,7 +62,7 @@ erDiagram
 
     checklist_templates {
         uuid id PK
-        uuid asset_type_id FK_UK
+        uuid asset_type_id FK
     }
 
     checklist_template_items {
@@ -105,7 +105,7 @@ erDiagram
 
     approvals {
         uuid id PK
-        uuid defect_id FK_UK
+        uuid defect_id FK
         uuid approver_id FK
         varchar decision "approved|rejected"
         text comment
@@ -114,7 +114,7 @@ erDiagram
 
     work_orders {
         uuid id PK
-        uuid defect_id FK_UK
+        uuid defect_id FK
         uuid assigned_to FK "nullable"
         varchar priority "low|medium|high|urgent"
         varchar status "open|assigned|in_progress|completed"
@@ -161,7 +161,7 @@ erDiagram
 | Asset → Inspection | 1:N | Inspections are scheduled per asset |
 | Inspection → Defect | 1:N (optional) | A "fail" inspection may trigger 0+ defect reports |
 | Defect → Work Order | 1:1 | After approval, exactly one work order per defect |
-| Defect → Approval | 1:1 (optional) | Only critical/high severity defects require approval |
+| Defect → Approval | 1:1 (optional) | Only critical severity defects require approval |
 | Work Order → Maintenance Update | 1:N | Technician notes logged as work progresses |
 | User → Notification | 1:N | Notifications are user-specific, marked read/unread |
 | User → Audit Log | 1:N | All mutating actions produce an immutable audit record |
