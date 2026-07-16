@@ -53,7 +53,12 @@ if (env.nodeEnv !== 'test') {
 app.set('assets', [...seedAssets] as Asset[]);
 
 app.get('/api/health', (_req, res) => {
-  res.json({ status: 'ok', service: 'eaop-backend', mode: env.databaseUrl ? 'postgres' : 'in-memory' });
+  res.json({
+    status: 'ok',
+    service: 'eaop-backend',
+    mode: 'in-memory',
+    databaseUrlConfigured: Boolean(env.databaseUrl),
+  });
 });
 
 app.use('/api/auth', authRouter);
@@ -87,5 +92,7 @@ app.use((err: Error, _req: Request, res: Response, _next: NextFunction) => {
 
 app.listen(env.port, () => {
   console.log(`EAOP backend listening on http://localhost:${env.port}`);
-  console.log(`Mode: ${env.databaseUrl ? 'PostgreSQL' : 'in-memory (no DATABASE_URL set)'}`);
+  console.log(
+    `Mode: in-memory (MVP)${env.databaseUrl ? ' — DATABASE_URL is set but not yet wired' : ''}`,
+  );
 });
