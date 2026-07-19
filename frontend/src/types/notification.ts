@@ -1,5 +1,6 @@
 export type NotificationType =
   | 'inspection_due'
+  | 'inspection_completed'
   | 'inspection_overdue'
   | 'defect_created'
   | 'defect_critical'
