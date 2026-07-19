@@ -1,5 +1,9 @@
 export type UserRole = 'admin' | 'plant_manager' | 'supervisor' | 'inspector' | 'technician';
 
+export interface UserPreferences {
+  emailNotifications?: boolean;
+}
+
 export interface User {
   id: string;
   fullName: string;
@@ -7,6 +11,7 @@ export interface User {
   role: UserRole;
   plantId: string | null;
   status: string;
+  preferences?: UserPreferences;
 }
 
 export interface Plant {

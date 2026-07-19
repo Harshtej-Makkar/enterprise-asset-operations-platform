@@ -2,8 +2,8 @@ import { randomUUID } from 'node:crypto';
 import type { Request, Response } from 'express';
 import {
   allWorkOrders,
+  notifyUser,
   runtimeAuditLogs,
-  runtimeNotifications,
   runtimeWorkOrders,
   seedAssets,
   seedDefects,
@@ -244,7 +244,7 @@ async function updateStatus(req: AuthedRequest, res: Response): Promise<void> {
   if (nextStatus === 'completed') {
     const defect = seedDefects.find((d) => d.id === wo.defect_id);
     if (defect) {
-      runtimeNotifications.push({
+      notifyUser(defect.reported_by, {
         id: randomUUID(),
         user_id: defect.reported_by,
         type: 'work_order_completed',
@@ -310,7 +310,7 @@ async function assign(req: AuthedRequest, res: Response): Promise<void> {
   });
 
   // Notify the assigned technician
-  runtimeNotifications.push({
+  notifyUser(technicianId, {
     id: randomUUID(),
     user_id: technicianId,
     type: 'work_order_assigned',

@@ -13,6 +13,7 @@ export interface User {
   role: UserRole;
   plant_id: string | null;
   status: 'active' | 'inactive';
+  preferences?: { email_notifications?: boolean };
   created_at: string;
   updated_at: string;
 }

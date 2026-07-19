@@ -2,9 +2,9 @@ import { randomUUID } from 'node:crypto';
 import type { Request, Response } from 'express';
 import {
   allDefects,
+  notifyUser,
   runtimeAuditLogs,
   runtimeDefects,
-  runtimeNotifications,
   runtimeWorkOrders,
   seedAssets,
   seedUsers,
@@ -156,7 +156,7 @@ async function create(req: AuthedRequest, res: Response): Promise<void> {
     seedUsers
       .filter((u) => ALLOWED_APPROVAL_ROLES.has(u.role))
       .forEach((u) => {
-        runtimeNotifications.push({
+        notifyUser(u.id, {
           id: randomUUID(),
           user_id: u.id,
           type: 'defect_critical',
@@ -169,7 +169,7 @@ async function create(req: AuthedRequest, res: Response): Promise<void> {
       });
   } else {
     // Non-critical defect: notify the reporter with a receipt
-    runtimeNotifications.push({
+    notifyUser(defect.reported_by, {
       id: randomUUID(),
       user_id: defect.reported_by,
       type: 'defect_created',
@@ -184,7 +184,7 @@ async function create(req: AuthedRequest, res: Response): Promise<void> {
     seedUsers
       .filter((u) => u.role === 'supervisor')
       .forEach((u) => {
-        runtimeNotifications.push({
+        notifyUser(u.id, {
           id: randomUUID(),
           user_id: u.id,
           type: 'defect_created',
@@ -359,7 +359,7 @@ async function approve(req: AuthedRequest, res: Response): Promise<void> {
       created_at: now,
     });
 
-    runtimeNotifications.push({
+    notifyUser(defect.reported_by, {
       id: randomUUID(),
       user_id: defect.reported_by,
       type: 'defect_approved',
@@ -383,7 +383,7 @@ async function approve(req: AuthedRequest, res: Response): Promise<void> {
       created_at: now,
     });
 
-    runtimeNotifications.push({
+    notifyUser(defect.reported_by, {
       id: randomUUID(),
       user_id: defect.reported_by,
       type: 'defect_rejected',

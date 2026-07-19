@@ -282,6 +282,20 @@ export const runtimeNotifications: Notification[] = [];
 export const runtimeReports: GeneratedReport[] = [];
 
 /**
+ * Push `notification` to runtimeNotifications only if the target user
+ * has not opted out of email notifications. Silent no-op when opted out.
+ *
+ * Used by every controller that creates notifications (defects,
+ * inspections, work-orders) so the Settings > Email Notifications
+ * toggle has real effect.
+ */
+export function notifyUser(userId: string, notification: Notification): void {
+  const user = seedUsers.find((u) => u.id === userId);
+  if (user?.preferences?.email_notifications === false) return;
+  runtimeNotifications.push(notification);
+}
+
+/**
  * Effective "all X" list for read endpoints — concatenates the immutable
  * seed with whatever was created at runtime. Order: runtime first (newest
  * in the typical user flow), then seed.

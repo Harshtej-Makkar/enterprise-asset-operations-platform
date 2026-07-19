@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import { seedUsers } from '../repositories/memory-store.js';
 import { requireAuth } from '../middleware/auth.js';
+import { usersController } from '../controllers/users.controller.js';
 
 /**
  * Users endpoint — lightweight lookup used by:
@@ -26,3 +27,7 @@ usersRouter.get('/', requireAuth, (req, res) => {
   }
   res.json({ data: users, total: users.length });
 });
+
+usersRouter.patch('/me', requireAuth, (req, res) => usersController.updateProfile(req as any, res));
+usersRouter.patch('/me/password', requireAuth, (req, res) => usersController.changePassword(req as any, res));
+usersRouter.patch('/me/preferences', requireAuth, (req, res) => usersController.updatePreferences(req as any, res));
